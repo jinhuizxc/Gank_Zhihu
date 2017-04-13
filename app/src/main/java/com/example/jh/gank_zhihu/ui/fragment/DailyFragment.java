@@ -8,6 +8,7 @@ import com.example.jh.gank_zhihu.ui.presenter.DailyFgPresenter;
 /**
  * Created by jinhui  on 2017/4/12
  * 邮箱: 1004260403@qq.com
+ *
  */
 
 public class DailyFragment extends MVPBaseFragment {

@@ -56,7 +56,7 @@ public abstract class MVPBaseFragment <V,P extends BasePresenter<V>> extends Fra
         }
     }
 
-    private void requestDataRefresh() {
+    protected void requestDataRefresh() {
         mIsRequestDataRefresh = true;
     }
 
@@ -82,7 +82,8 @@ public abstract class MVPBaseFragment <V,P extends BasePresenter<V>> extends Fra
         }
     }
 
-    private void initView(View rootView) {
+    // 此方法改为protected才能被子类调用
+    protected void initView(View rootView) {
     }
 
     // 抽象方法

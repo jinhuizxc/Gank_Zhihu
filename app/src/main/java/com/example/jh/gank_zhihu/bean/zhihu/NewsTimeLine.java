@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * Created by jinhui  on 2017/4/10
  * 邮箱: 1004260403@qq.com
+ *
  */
 
 public class NewsTimeLine implements Serializable {

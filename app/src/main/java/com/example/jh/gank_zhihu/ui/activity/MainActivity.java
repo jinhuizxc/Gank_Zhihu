@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 
 /**
  * 使用jdk1.8 ,mvp、retrofit2、rxJava
+ * 忙里偷闲开始着手写一个新闻类项目，也是一个学习的过程。
  */
 public class MainActivity extends MVPBaseActivity {
 
@@ -73,10 +74,10 @@ public class MainActivity extends MVPBaseActivity {
         if(item.getItemId() == R.id.today_github){
             String github_trending = "https://github.com/trending";
             // 界面跳转
-//            startActivity(GankWebActivity.newIntent(this,github_trending));
+            startActivity(GankWebActivity.newIntent(this, github_trending));
             return true;
         }else if(item.getItemId() == R.id.about_me){
-//            startActivity(new Intent(this,AboutMeActivity.class));
+            startActivity(new Intent(this,AboutMeActivity.class));
             return true;
         }else{
             return super.onOptionsItemSelected(item);
