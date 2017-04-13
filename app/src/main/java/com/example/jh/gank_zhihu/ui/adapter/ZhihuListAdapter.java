@@ -1,0 +1,246 @@
+package com.example.jh.gank_zhihu.ui.adapter;
+
+import android.content.Context;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.example.jh.gank_zhihu.R;
+import com.example.jh.gank_zhihu.bean.zhihu.NewsTimeLine;
+import com.example.jh.gank_zhihu.bean.zhihu.Stories;
+import com.example.jh.gank_zhihu.bean.zhihu.TopStories;
+import com.example.jh.gank_zhihu.ui.activity.ZhihuWebActivity;
+import com.example.jh.gank_zhihu.utils.ScreenUtils;
+import com.example.jh.gank_zhihu.widget.TopStoriesViewPager;
+
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+/**
+ * Created by jinhui  on 2017/4/13
+ * 邮箱: 1004260403@qq.com
+ *
+ * 知乎列表的适配器
+ * 有标准写法：
+ * 1.@ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+ * 会重载3个本地方法
+ * 2.类对象，并自己添加构造方法
+ *
+ *
+ */
+
+public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+
+    private static final String TAG = "ZhihuListAdapter";
+    // 类对象
+    private NewsTimeLine newsTimeLine;
+    private Context context;
+    //静态常量
+    private int status = 1;
+    private static final int TYPE_TOP = -1;
+    private static final int TYPE_FOOTER = -2;
+    public static final int LOAD_MORE = 0;
+    public static final int LOAD_PULL_TO = 1;
+    public static final int LOAD_NONE = 2;
+    public static final int LOAD_END = 3;
+
+    public ZhihuListAdapter(Context context,NewsTimeLine newsTimeLine) {
+        this.newsTimeLine = newsTimeLine;
+        this.context = context;
+    }
+
+    // 在写适配器的时候切记要加载 getItemViewType 这个方法
+
+    @Override
+    public int getItemViewType(int position) {
+        if(newsTimeLine.getTop_stories() != null){
+            if(position == 0){
+                return TYPE_TOP;
+            }else if(position + 1 == getItemCount()) {
+                return TYPE_FOOTER;
+            }else{
+                return position;
+            }
+            }else if(position +1 == getItemCount()){
+                return TYPE_FOOTER;
+            }else{
+            return position;
+        }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        Log.e(TAG, "onViewAttachedToWindow");
+        if(holder instanceof TopStoriesViewHolder){
+            TopStoriesViewHolder topStoriesViewHolder = (TopStoriesViewHolder) holder;
+            topStoriesViewHolder.vp_top_stories.startAutoRun();
+        }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        Log.e(TAG, "onViewDetachedFromWindow");
+        if(holder instanceof TopStoriesViewHolder){
+            TopStoriesViewHolder topStoriesViewHolder = (TopStoriesViewHolder) holder;
+            topStoriesViewHolder.vp_top_stories.stopAutoRun();
+        }
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.e(TAG, "onCreateViewHolder");
+        if(viewType == TYPE_TOP){
+            View rootView = View.inflate(parent.getContext(), R.layout.item_zhihu_top_stories, null);
+            return new TopStoriesViewHolder(rootView);
+        }else if(viewType == TYPE_FOOTER){
+            View view = View.inflate(parent.getContext(), R.layout.activity_view_footer, null);
+            return new FooterViewHolder(view);
+        }else{
+            View rootView = View.inflate(parent.getContext(), R.layout.item_zhihu_stories, null);
+            return new StoriesViewHolder(rootView);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Log.e(TAG, "onBindViewHolder");
+        if(holder instanceof FooterViewHolder){
+            FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
+            footerViewHolder.bindItem();
+        }else if(holder instanceof TopStoriesViewHolder){
+            TopStoriesViewHolder topStoriesViewHolder = (TopStoriesViewHolder) holder;
+            topStoriesViewHolder.bindItem(newsTimeLine.getTop_stories());
+        }else if(holder instanceof StoriesViewHolder){
+            StoriesViewHolder storiesViewHolder = (StoriesViewHolder) holder;
+            storiesViewHolder.bindItem(newsTimeLine.getStories().get(position-1));
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        Log.e(TAG, "getItemCount");
+        return newsTimeLine.getStories().size()+2;
+    }
+
+
+    /**
+     * @创建本地的ViewHolder
+     * @TopStories
+     */
+    public class TopStoriesViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.vp_top_stories)
+        TopStoriesViewPager vp_top_stories;
+        @Bind(R.id.tv_top_title)
+        TextView tv_top_title;
+
+        public TopStoriesViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        /**
+         * @绑定item
+         *  item点击事件的执行
+         *
+         */
+        public  void bindItem(List<TopStories> topList){
+            vp_top_stories.init(topList, tv_top_title, item -> {
+                // 界面的跳转
+                context.startActivity(ZhihuWebActivity.newIntent(context,item.getId()));
+            });
+        }
+    }
+
+    // FootView
+    public class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.tv_load_prompt)
+        TextView tv_load_prompt;
+        @Bind(R.id.progress)
+        ProgressBar progress;
+
+        public FooterViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            LinearLayoutCompat.LayoutParams params =
+                    new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ScreenUtils.instance(context).dip2px(40));
+            itemView.setLayoutParams(params);
+        }
+
+        // 上拉加载或者下拉刷新时方法
+        public void bindItem() {
+            switch (status){
+                case LOAD_MORE:
+                    progress.setVisibility(View.VISIBLE);
+                    tv_load_prompt.setText("正在加载...");
+                    itemView.setVisibility(View.VISIBLE);
+                    break;
+                case LOAD_PULL_TO:
+                    progress.setVisibility(View.GONE);
+                    tv_load_prompt.setText("上拉加载更多");
+                    itemView.setVisibility(View.VISIBLE);
+                    break;
+                case LOAD_NONE:
+                    System.out.println("LOAD_NONE----");
+                    progress.setVisibility(View.GONE);
+                    tv_load_prompt.setText("已无更多加载");
+                    break;
+                case LOAD_END:
+                    itemView.setVisibility(View.GONE);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Stories
+     */
+    public class StoriesViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.card_stories)
+        CardView card_stories;
+        @Bind(R.id.tv_stories_title)
+        TextView tv_stories_title;
+        @Bind(R.id.iv_stories_img)
+        ImageView iv_stories_img;
+
+        public StoriesViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            ScreenUtils screenUtil = ScreenUtils.instance(context);
+            int screenWidth = screenUtil.getScreenWidth();
+            card_stories.setLayoutParams(new LinearLayout.LayoutParams(screenWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
+        }
+
+        // 在下拉刷新后需要进行加载数据的方法
+        public void bindItem(Stories stories) {
+            tv_stories_title.setText(stories.getTitle());
+            String[] images = stories.getImages();
+            Glide.with(context).load(images[0]).centerCrop().into(iv_stories_img);
+            card_stories.setOnClickListener(v -> context.startActivity(ZhihuWebActivity.newIntent(context,stories.getId())));
+        }
+    }
+
+    // 刷新适配器操作----->change recycler state
+    public void updateLoadStatus(int status) {
+        this.status = status;
+        notifyDataSetChanged();
+    }
+
+}
