@@ -1,5 +1,6 @@
 package com.example.jh.gank_zhihu.ui.adapter;
 
+
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -35,10 +36,28 @@ import butterknife.ButterKnife;
  * 1.@ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
  * 会重载3个本地方法
  * 2.类对象，并自己添加构造方法
- *
- *
  */
 
+/**
+ * 一次刷新：适配器执行的方法。
+ * 04-16 09:01:29.798 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onViewDetachedFromWindow
+ 04-16 09:01:29.798 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onViewDetachedFromWindow
+ 04-16 09:01:29.798 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onViewDetachedFromWindow
+ 04-16 09:01:29.799 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onViewDetachedFromWindow
+ 04-16 09:01:29.799 12797-12797/com.example.jh.gank_zhihu E/MVPBaseFragment: !requestDataRefresh =true
+ 04-16 09:01:29.801 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onCreateViewHolder
+ 04-16 09:01:29.802 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onBindViewHolder
+ 04-16 09:01:29.808 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onViewAttachedToWindow
+ 04-16 09:01:29.811 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onCreateViewHolder
+ 04-16 09:01:29.823 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onBindViewHolder
+ 04-16 09:01:29.824 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onViewAttachedToWindow
+ 04-16 09:01:29.824 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onCreateViewHolder
+ 04-16 09:01:29.825 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onBindViewHolder
+ 04-16 09:01:29.826 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onViewAttachedToWindow
+ 04-16 09:01:29.826 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onCreateViewHolder
+ 04-16 09:01:29.828 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onBindViewHolder
+ 04-16 09:01:29.830 12797-12797/com.example.jh.gank_zhihu E/ZhihuListAdapter: onViewAttachedToWindow
+ */
 public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private static final String TAG = "ZhihuListAdapter";
@@ -130,8 +149,9 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        Log.e(TAG, "getItemCount");
+//        Log.e(TAG, "newsTimeLine" + newsTimeLine.getStories().size() + 2);
         return newsTimeLine.getStories().size()+2;
+
     }
 
 

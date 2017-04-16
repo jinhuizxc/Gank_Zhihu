@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 
@@ -24,6 +25,7 @@ import butterknife.ButterKnife;
 
 public abstract class MVPBaseActivity <V, P extends BasePresenter<V>> extends AppCompatActivity {
 
+    private static final String TAG = "MVPBaseActivity";
     protected P mPresenter;
     protected AppBarLayout mAppBar;
     protected Toolbar mToolbar;
@@ -43,6 +45,7 @@ public abstract class MVPBaseActivity <V, P extends BasePresenter<V>> extends Ap
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar != null && mAppBar != null) {
             setSupportActionBar(mToolbar); //把Toolbar当做ActionBar给设置
+            // 加载子activity的actionbar
             if (canBack()) {
                 ActionBar actionBar = getSupportActionBar();
                 if (actionBar != null)
@@ -56,6 +59,16 @@ public abstract class MVPBaseActivity <V, P extends BasePresenter<V>> extends Ap
             setupSwipeRefresh();
         }
     }
+    //————————————————————————————————
+    /**
+     * 判断当前 Activity 是否允许返回
+     * 主界面不允许返回，次级界面允许返回
+     *
+     * @return false
+     */
+    public boolean canBack() {
+        return false;
+    }
 
     /**
      * 判断子Activity是否需要刷新功能
@@ -65,6 +78,7 @@ public abstract class MVPBaseActivity <V, P extends BasePresenter<V>> extends Ap
     public Boolean isSetRefresh() {
         return false;
     }
+    //———————————————————————————————
     private void setupSwipeRefresh() {
         mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         if (mRefreshLayout != null) {
@@ -78,7 +92,9 @@ public abstract class MVPBaseActivity <V, P extends BasePresenter<V>> extends Ap
 
     // 定义boolean值
     private boolean mIsRequestDataRefresh = false;
+
     public void requestDataRefresh() {
+        Log.e(TAG, "requestDataRefresh父类方法被执行");
         mIsRequestDataRefresh = true;
     }
 
@@ -99,15 +115,7 @@ public abstract class MVPBaseActivity <V, P extends BasePresenter<V>> extends Ap
         }
     }
 
-    /**
-     * 判断当前 Activity 是否允许返回
-     * 主界面不允许返回，次级界面允许返回
-     *
-     * @return false
-     */
-    public boolean canBack() {
-        return false;
-    }
+
 
     protected abstract P createPresenter();
 

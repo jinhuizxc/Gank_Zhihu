@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,9 @@ import butterknife.ButterKnife;
  * 邮箱: 1004260403@qq.com
  */
 
-public abstract class MVPBaseFragment <V,P extends BasePresenter<V>> extends Fragment{
+public abstract class MVPBaseFragment<V, P extends BasePresenter<V>> extends Fragment {
 
+    private static final String TAG = "MVPBaseFragment";
     protected P mPresenter;
     private SwipeRefreshLayout mRefreshLayout;
     private boolean mIsRequestDataRefresh = false;
@@ -39,7 +41,7 @@ public abstract class MVPBaseFragment <V,P extends BasePresenter<V>> extends Fra
         // 初始化控件
         initView(rootView);
         // 设置刷新view
-        if(isSetRefresh()) {
+        if (isSetRefresh()) {
             setupSwipeRefresh(rootView);
         }
         return rootView;
@@ -47,16 +49,17 @@ public abstract class MVPBaseFragment <V,P extends BasePresenter<V>> extends Fra
 
     private void setupSwipeRefresh(View rootView) {
         mRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh);
-        if(mRefreshLayout != null){
+        if (mRefreshLayout != null) {
             mRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
-                    R.color.refresh_progress_2,R.color.refresh_progress_3);
+                    R.color.refresh_progress_2, R.color.refresh_progress_3);
             mRefreshLayout.setProgressViewOffset(true, 0, (int) TypedValue
-                    .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24,getResources().getDisplayMetrics()));
+                    .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
             mRefreshLayout.setOnRefreshListener(this::requestDataRefresh);
         }
     }
 
     protected void requestDataRefresh() {
+        Log.e(TAG, "requestDataRefresh 父类方法被执行");
         mIsRequestDataRefresh = true;
     }
 
@@ -71,12 +74,13 @@ public abstract class MVPBaseFragment <V,P extends BasePresenter<V>> extends Fra
             return;
         }
         if (!requestDataRefresh) {
+            Log.e(TAG, "!requestDataRefresh =" + !requestDataRefresh);
             mIsRequestDataRefresh = false;
             mRefreshLayout.postDelayed(() -> {
                 if (mRefreshLayout != null) {
                     mRefreshLayout.setRefreshing(false);
                 }
-            },1000);
+            }, 1000);
         } else {
             mRefreshLayout.setRefreshing(true);
         }
@@ -88,6 +92,7 @@ public abstract class MVPBaseFragment <V,P extends BasePresenter<V>> extends Fra
 
     // 抽象方法
     protected abstract P createPresenter();
+
     protected abstract int createViewLayoutId();
 
 

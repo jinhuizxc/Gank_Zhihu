@@ -55,6 +55,7 @@ public class AboutMeActivity extends MVPBaseActivity implements View.OnClickList
         collapsingToolbarLayout.setTitle("很高兴你能看到这里");
     }
 
+    
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -70,4 +71,5 @@ public class AboutMeActivity extends MVPBaseActivity implements View.OnClickList
                 break;
         }
     }
+
 }

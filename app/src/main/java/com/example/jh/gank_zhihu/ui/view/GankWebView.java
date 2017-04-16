@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
  * 邮箱: 1004260403@qq.com
  */
 
-public interface IGankWebView {
+public interface GankWebView {
 
     ProgressBar getProgressBar();
 

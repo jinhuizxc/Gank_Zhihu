@@ -22,7 +22,7 @@ import android.support.v7.widget.RecyclerView;
  * Boolean t1 = (Boolean) map.get(t); &#47;&#47;前面只能用Boolean强制转换，不能使用boolean.
  */
 
-public interface ZhihuView {
+public interface ZhihuFgView {
     RecyclerView getRecyclerView();
 
     LinearLayoutManager getLayoutManager();

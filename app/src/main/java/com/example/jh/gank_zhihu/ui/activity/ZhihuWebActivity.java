@@ -9,10 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jh.gank_zhihu.R;
-import com.example.jh.gank_zhihu.ui.base.BasePresenter;
 import com.example.jh.gank_zhihu.ui.base.MVPBaseActivity;
 import com.example.jh.gank_zhihu.ui.presenter.ZhihuWebPresenter;
-import com.example.jh.gank_zhihu.ui.view.ZhihuView;
 import com.example.jh.gank_zhihu.ui.view.ZhihuWebView;
 
 import butterknife.Bind;

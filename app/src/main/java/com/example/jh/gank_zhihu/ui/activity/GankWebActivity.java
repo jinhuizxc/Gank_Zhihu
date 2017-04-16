@@ -9,13 +9,11 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.example.jh.gank_zhihu.R;
-import com.example.jh.gank_zhihu.ui.base.BasePresenter;
 import com.example.jh.gank_zhihu.ui.base.MVPBaseActivity;
 import com.example.jh.gank_zhihu.ui.presenter.GankWebPresenter;
-import com.example.jh.gank_zhihu.ui.view.IGankWebView;
+import com.example.jh.gank_zhihu.ui.view.GankWebView;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by jinhui  on 2017/4/11
@@ -23,7 +21,7 @@ import butterknife.ButterKnife;
  *
  */
 
-public class GankWebActivity extends MVPBaseActivity <IGankWebView, GankWebPresenter> implements IGankWebView{
+public class GankWebActivity extends MVPBaseActivity <GankWebView, GankWebPresenter> implements GankWebView {
 
     private static final String GANK_URL = "gank_url";
     private static final String TAG = "GankWebActivity";

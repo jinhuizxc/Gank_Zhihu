@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by jinhui  on 2017/4/11
  * 邮箱: 1004260403@qq.com
+ * 这个类值得好好分析：————————————TopStoriesViewPager
  */
 
 public class TopStoriesViewPager extends RelativeLayout {

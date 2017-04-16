@@ -24,8 +24,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ *
+ * Created by jinhui  on 2017/4/11
+ * 邮箱: 1004260403@qq.com
+ *
  * 使用jdk1.8 ,mvp、retrofit2、rxJava
  * 忙里偷闲开始着手写一个新闻类项目，也是一个学习的过程。
+ * 2017-4-16 今天完成预期目标，
+ * 但是没有加入Google Material Desgin,准备进行下一步设计！
  */
 public class MainActivity extends MVPBaseActivity {
 

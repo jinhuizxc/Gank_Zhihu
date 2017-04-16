@@ -2,7 +2,6 @@ package com.example.jh.gank_zhihu.ui.presenter;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -11,14 +10,14 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.example.jh.gank_zhihu.ui.base.BasePresenter;
-import com.example.jh.gank_zhihu.ui.view.IGankWebView;
+import com.example.jh.gank_zhihu.ui.view.GankWebView;
 
 /**
  * Created by jinhui  on 2017/4/12
  * 邮箱: 1004260403@qq.com
  */
 
-public class GankWebPresenter extends BasePresenter<IGankWebView>{
+public class GankWebPresenter extends BasePresenter<GankWebView>{
 
     private static final String TAG = "GankWebPresenter";
     // 这里传入的是Activity的参数，通常都会传上下文，
@@ -30,7 +29,7 @@ public class GankWebPresenter extends BasePresenter<IGankWebView>{
 
 
     public void setWebView(String url) {
-        IGankWebView urlView = getView();
+        GankWebView urlView = getView();
         ProgressBar progressBar = urlView.getProgressBar();
         WebView webView = urlView.getWebView();
         // 导入import android.webkit.WebSettings;
@@ -78,6 +77,8 @@ public class GankWebPresenter extends BasePresenter<IGankWebView>{
                 super.onReceivedTitle(view, title);
                 System.out.println("网页title："+title);
                 activity.setTitle(title);
+                // 从GankWebActivity到到GankWebActivity的跳转的title在webView方法中实现
+                // 设置activity.setTitle(title);
             }
         });
         webView.loadUrl(url);

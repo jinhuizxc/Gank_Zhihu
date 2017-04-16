@@ -12,6 +12,7 @@ public class Gank implements Serializable {
 
     private String url;
     private String type;
+    // 设置title的描述
     public  String desc;
     private String who;
     private boolean used;
