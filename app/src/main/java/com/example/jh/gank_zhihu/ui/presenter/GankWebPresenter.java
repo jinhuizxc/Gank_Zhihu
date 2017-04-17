@@ -29,14 +29,17 @@ public class GankWebPresenter extends BasePresenter<GankWebView>{
 
 
     public void setWebView(String url) {
+
         GankWebView urlView = getView();
         ProgressBar progressBar = urlView.getProgressBar();
         WebView webView = urlView.getWebView();
+
         // 导入import android.webkit.WebSettings;
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);// 支持JS
         settings.setBuiltInZoomControls(true);// 显示放大缩小按钮
         settings.setUseWideViewPort(true);// 支持双击放大缩小
+
         webView.setWebViewClient(new WebViewClient(){
             // 下面这2个方法要自己手动添加，并不会自动重载
             @Override
@@ -74,9 +77,9 @@ public class GankWebPresenter extends BasePresenter<GankWebView>{
 
             @Override
             public void onReceivedTitle(WebView view, String title) {
-                super.onReceivedTitle(view, title);
                 System.out.println("网页title："+title);
                 activity.setTitle(title);
+                super.onReceivedTitle(view, title);
                 // 从GankWebActivity到到GankWebActivity的跳转的title在webView方法中实现
                 // 设置activity.setTitle(title);
             }

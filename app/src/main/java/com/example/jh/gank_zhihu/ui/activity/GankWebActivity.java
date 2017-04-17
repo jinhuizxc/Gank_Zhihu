@@ -18,6 +18,23 @@ import butterknife.Bind;
 /**
  * Created by jinhui  on 2017/4/11
  * 邮箱: 1004260403@qq.com
+ * java.lang.IllegalArgumentException: Receiver not registered:
+ * android.widget.ZoomButtonsController$1@3bdd2de8 at android.app.LoadedApk.forgetReceiverDispatcher(LoadedApk.java:871)
+ * at android.app.ContextImpl.unregisterReceiver(ContextImpl.java:2110)
+ * at android.content.ContextWrapper.unregisterReceiver(ContextWrapper.java:529)
+ * 解决：发现是webview的 ZoomButton，也就是那两个放大和缩小的按钮导致的。
+ * 如果设置为让他们出现，并且可以自动隐藏，那么，由于他们的自动隐藏是一个渐变的过程，
+ * 所以在逐渐消失的过程中如果调用了父容器的destroy方法，就会导致Leaked。 所以解决方案是，在destroy之前，先让他俩立马消失。
+ * 我的解决办法是，在finish掉此activity时，把子view 全部remove掉。
+ * 理论上说，只需要remove这个zoom view就可以，但是我没找到获取该view的办法，
+ * 只好remove掉所有的子view。这样在activity destroy时就不会报 WindowLeaked的错误了。
+ * @Override public void finish() {
+ * ViewGroup view = (ViewGroup) getWindow().getDecorView();
+ * view.removeAllViews();
+ * super.finish();
+ * }
+ * 也有人说，可以直接设置webView.setVisiable(View.GONE)；
+ * 在Activity的onDestroy里面加上这么一句：web.setVisibility(View.GONE);把WebView设置为GONE就可以了。
  *
  */
 
